@@ -6,6 +6,7 @@ import com.tianyu.jty.acount.entity.AccountType;
 import com.tianyu.jty.common.persistence.HibernateDao;
 
 /**
+ * 
  * @date 2015年1月22日
  */
 @Repository
