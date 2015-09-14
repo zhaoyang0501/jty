@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @Table(name = "acount_trade")
 @DynamicUpdate @DynamicInsert
@@ -26,10 +28,13 @@ public class Trade {
 	private Card fromCard;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Card toCard;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
 	private Date createDate;
 	private String remark;
 	private Double cash;
 	private Double restCash;
+	
+	private String man;
 	/**转账，存款，取款*/
 	private String type;
 	public String getType() {
@@ -79,5 +84,11 @@ public class Trade {
 	}
 	public void setRestCash(Double restCash) {
 		this.restCash = restCash;
+	}
+	public String getMan() {
+		return man;
+	}
+	public void setMan(String man) {
+		this.man = man;
 	}
 }

@@ -183,5 +183,14 @@ function successTip(data,dg,d){
 	}else{
 		parent.$.messager.alert(data);
 		return false;
-	}  
+	} 
+  function successTip(data){
+  	if(data=='success'){
+	parent.$.messager.show({ title : "提示",msg: "操作成功！", position: "bottomRight" });
+  		return true;
+  	}else{
+  		parent.$.messager.alert(data);
+  		return false;
+  	}  
+  }
 }

@@ -1,5 +1,6 @@
 package com.tianyu.jty.acount.web;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tianyu.jty.acount.entity.AccountUser;
 import com.tianyu.jty.acount.entity.Card;
+import com.tianyu.jty.acount.service.AccountTypeService;
+import com.tianyu.jty.acount.service.AccountUserService;
 import com.tianyu.jty.acount.service.CardService;
+import com.tianyu.jty.acount.util.CardIDUtil;
 import com.tianyu.jty.common.persistence.Page;
 import com.tianyu.jty.common.persistence.PropertyFilter;
 import com.tianyu.jty.common.web.BaseController;
@@ -34,11 +39,18 @@ public class CardController extends BaseController {
 
 	@Autowired
 	private CardService cardService;
+	
+	@Autowired
+	private AccountUserService accountUserService;
+	
+	@Autowired
+	private AccountTypeService accountTypeService;
 	/**
 	 * 默认页面
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String list() {
+	public String list( Model model) {
+		model.addAttribute("accountTypes",accountTypeService.getAll() );
 		return "account/cardList";
 	}
 
@@ -62,6 +74,8 @@ public class CardController extends BaseController {
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public String createForm(Model model) {
 		model.addAttribute("card", new Card());
+		model.addAttribute("accountTypes",accountTypeService.getAll() );
+		model.addAttribute("accountUsers",accountUserService.getAll() );
 		model.addAttribute("action", "create");
 		return "account/cardForm";
 	}
@@ -75,6 +89,9 @@ public class CardController extends BaseController {
 	@RequestMapping(value = "create", method = RequestMethod.POST)
 	@ResponseBody
 	public String create(@Valid Card card, Model model) {
+		card.setId(CardIDUtil.getID(card.getAccountType().getId()));
+		card.setCreateDate(new Date(System.currentTimeMillis()));
+		card.setState("正常");
 		cardService.save(card);
 		return "success";
 	}
@@ -89,6 +106,8 @@ public class CardController extends BaseController {
 	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") String id, Model model) {
 		model.addAttribute("card", cardService.get(id));
+		model.addAttribute("accountTypes",accountTypeService.getAll() );
+		model.addAttribute("accountUsers",accountUserService.getAll() );
 		model.addAttribute("action", "update");
 		return "account/cardForm";
 	}
@@ -102,8 +121,14 @@ public class CardController extends BaseController {
 	 */
 	@RequestMapping(value = "update", method = RequestMethod.POST)
 	@ResponseBody
-	public String update(@Valid @ModelAttribute @RequestBody Card card,Model model) {
-		cardService.update(card);
+	public String update(  Card card) {
+		Card oldCard=cardService.get(card.getId());
+		oldCard.setAccountType(card.getAccountType());
+		oldCard.setAccountUser(card.getAccountUser());
+		oldCard.setBank(card.getBank());
+		oldCard.setPersonno(card.getBank());
+		oldCard.setCash(card.getCash());
+		cardService.update(oldCard);
 		return "success";
 	}
 
@@ -117,7 +142,7 @@ public class CardController extends BaseController {
 	@ResponseBody
 	public String delete(@PathVariable("id") String id) {
 		Card card=cardService.get(id);
-		card.setState("冻结");
+		card.setState("销户");
 		cardService.update(card);
 		return "success";
 	}
@@ -127,11 +152,6 @@ public class CardController extends BaseController {
 	 * Preparable二次部分绑定的效果,先根据form的id从数据库查出Task对象,再把Form提交的内容绑定到该对象上。
 	 * 因为仅update()方法的form中有id属性，因此仅在update时实际执行.
 	 */
-	@ModelAttribute
-	public void getCard(@RequestParam(value = "id", defaultValue = "-1") String id,Model model) {
-		if (!id.equals("-1")) {
-			model.addAttribute("card", cardService.get(id));
-		}
-	}
-
+	
+	
 }

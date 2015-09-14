@@ -10,16 +10,9 @@
 <div id="tb" style="padding:5px;height:auto">
         <div>
         	<form id="searchFrom" action="">
-       	        <input type="text" name="filter_LIKES_name" class="easyui-validatebox" data-options="width:150,prompt: '用户名'"/>
+       	        <input type="text" name="filter_LIKES_fromCard.id" class="easyui-validatebox" data-options="width:150,prompt: '账户号码'"/>
 		        <a href="javascript(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="cx()">查询</a>
 			</form>
-			
-	       		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="add();">添加</a>
-	       		<span class="toolbar-item dialog-tool-separator"></span>
-	            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" data-options="disabled:false" onclick="del()">删除</a>
-	        	<span class="toolbar-item dialog-tool-separator"></span>
-	            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="upd()">修改</a>
-	            <span class="toolbar-item dialog-tool-separator"></span>
         </div> 
         
   </div>
@@ -50,10 +43,13 @@ $(function(){
 				return value.accountUser.name+"("+value.id+")";
 		}},     
         {field:'cash',title:'发生金额',sortable:true,width:100},
+        {field:'restCash',title:'账户余额',sortable:true,width:100},
 		 {field:'toCard',title:'对方账号',sortable:true,width:160,formatter: function(value,row,index){
+			 if(value!=null)
 				return value.accountUser.name+"("+value.id+")";
 		}},  
         {field:'createDate',title:'操作日期',sortable:true,width:100},
+        {field:'man',title:'操作人',sortable:true,width:100},
 		 {field:'remark',title:'备注',sortable:true,width:100}
       
     ]],

@@ -14,13 +14,10 @@
 		        <a href="javascript(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="cx()">查询</a>
 			</form>
 	       		
-	            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-hamburg-lock" plain="true" data-options="disabled:false" onclick="del()">开户</a>
+	            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-hamburg-lock" plain="true" data-options="disabled:false" onclick="add()">开户</a>
 	        	<span class="toolbar-item dialog-tool-separator"></span>
 	           
 	            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-hamburg-lock" plain="true" data-options="disabled:false" onclick="del()">销户</a>
-	        	<span class="toolbar-item dialog-tool-separator"></span>
-	           
-	            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-hamburg-lock" plain="true" data-options="disabled:false" onclick="del()">冻结</a>
 	        	<span class="toolbar-item dialog-tool-separator"></span>
 	            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="upd()">修改</a>
 	            <span class="toolbar-item dialog-tool-separator"></span>
@@ -82,10 +79,10 @@ $(function(){
 //弹窗增加
 function add() {
 	d=$("#dlg").dialog({   
-	    title: '添加用户',    
+	    title: '开户',    
 	    width: 380,    
 	    height: 380,    
-	    href:'${ctx}/account/user/create',
+	    href:'${ctx}/account/card/create',
 	    maximizable:true,
 	    modal:true,
 	    buttons:[{
@@ -106,7 +103,7 @@ function add() {
 function del(){
 	var row = dg.datagrid('getSelected');
 	if(rowIsNull(row)) return;
-	parent.$.messager.confirm('提示', '您确定要冻结？', function(data){
+	parent.$.messager.confirm('提示', '您确定要对该账户进行销户处理？', function(data){
 		if (data){
 			$.ajax({
 				type:'get',
@@ -124,10 +121,10 @@ function upd(){
 	var row = dg.datagrid('getSelected');
 	if(rowIsNull(row)) return;
 	d=$("#dlg").dialog({   
-	    title: '修改用户',    
+	    title: '修改账户权限',    
 	    width: 380,    
 	    height: 340,    
-	    href:'${ctx}/account/user/update/'+row.id,
+	    href:'${ctx}/account/card/update/'+row.id,
 	    maximizable:true,
 	    modal:true,
 	    buttons:[{

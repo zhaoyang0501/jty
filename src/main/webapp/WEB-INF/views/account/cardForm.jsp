@@ -8,37 +8,40 @@
 </head>
 <body>
 <div>
-	<form id="mainform" action="${ctx }/account/user/${action}" method="post">
+	<form id="mainform" action="${ctx }/account/card/${action}" method="post">
 		<table class="formTable">
 			<tr>
-				<td>用户名：</td>
+				<td>开户人：</td>
 				<td>
-					<input type="hidden" name="id" value="${id }"/>
-					<input id="loginName" name="loginName" class="easyui-validatebox" data-options="width: 150" value="${user.loginName }"> 
+				<input type="hidden" name="id" value="${id }"/>
+					 <select   data-options="required:'required'" class="easyui-combobox easyui-validatebox" name="accountUser.id" style="width:200px;">
+				      <c:forEach items="${accountUsers}" var="bean">
+				        <option value="${bean.id }">${bean.name }</option>
+				      </c:forEach>
+   					 </select>
 				</td>
 			</tr>
 			<tr>
-				<td>姓名：</td>
-				<td><input id="name" name="name" value='${user.name }' type="text" class="easyui-validatebox" data-options="width: 150,required:'required',validType:'length[2,40]'"/></td>
+				<td>账户类型：</td>
+				<td><select data-options="required:'required'" class="easyui-combobox easyui-validatebox"  name="accountType.id" style="width:200px;">
+				      <c:forEach items="${accountTypes}" var="bean">
+				        <option value="${bean.id }">${bean.name }</option>
+				      </c:forEach>
+   					 </select>
+   				</td>
 			</tr>
 			<tr>
-				<td>密码：</td>
-				<td><input id="password" value='${user.password }' name="password" type="password" class="easyui-validatebox" data-options="width: 150,required:'required',validType:'length[6,20]'"/></td>
+				<td>开户人身份证号码：</td>
+				<td><input id="personno" value='${card.personno}' name="personno" type="text" class="easyui-validatebox" data-options="width: 150,required:'required',validType:'length[10,16]'"/></td>
 			</tr>
 			<tr>
-				<td>性别：</td>
+				<td>开户银行：</td>
+				<td><input id="bank" value='${card.bank}'  name="bank" type="text" class="easyui-validatebox" data-options="width: 150,required:'required',validType:'length[0,40]'"/></td>
+			</tr>
+			<tr>
+				<td>账户金额：</td>
 				<td>
-				<input type="radio" id="man" name="gender" value="1"/><label for="man">男</label>
-				<input type="radio" id="woman" name="gender" value="0"/><label for="woman">女</label>
-				</td>
-			</tr>
-			<tr>
-				<td>Email：</td>
-				<td><input type="text" name="email" value="${user.email }" class="easyui-validatebox" data-options="width: 150,validType:'email'"/></td>
-			</tr>
-			<tr>
-				<td>电话：</td>
-				<td><input type="text" name="phone" value="${user.phone }" class="easyui-numberbox"  data-options="width: 150"/></td>
+				<input id="cash" value='${card.cash}'  name="cash" type="text" class="easyui-validatebox easyui-numberbox" data-options="width: 150,required:'required',validType:'length[1,6]'"/></td>
 			</tr>
 		</table>
 	</form>
@@ -58,9 +61,11 @@ if(action=='create'){
 	    }
 	});  
 }else if(action=='update'){
-	$("input[name='loginName']").attr('readonly','readonly');
+	/* $("input[name='loginName']").attr('readonly','readonly');
 	$("input[name='loginName']").css('background','#eee')
-	$("input[name='gender'][value=${user.gender}]").attr("checked",true);
+	$("input[name='gender'][value=${user.gender}]").attr("checked",true); */
+	$("select[name='accountUser.id']").val("${card.accountUser.id}");
+	$("select[name='accountType.id']").val("${card.accountType.id}");
 }
 
 //提交表单

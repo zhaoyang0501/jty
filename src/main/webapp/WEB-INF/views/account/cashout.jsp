@@ -14,7 +14,7 @@
                 <tr>
                     <td>账号:</td>
                     <td>
-                    <select   data-options="required:'required'" class="easyui-combobox easyui-validatebox" name="fromCard.id" style="width:200px;">
+                    <select   data-options="required:'required',onSelect: function(rec){ fun_change(rec) }" class="easyui-combobox easyui-validatebox" name="fromCard.id" style="width:200px;" >
 				      <c:forEach items="${cards}" var="bean">
 				        <option value="${bean.id }">${bean.id}</option>
 				      </c:forEach>
@@ -22,9 +22,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>金额:</td>
-                    <td><input id="cash"  name="cash" type="text" class="easyui-validatebox easyui-numberbox" data-options="width: 150,required:'required',validType:'length[1,6]'"></input></td>
+                    <td>账户余额:</td>
+                    <td><input id="nowcash"  name="nowcash" type="text"  readonly="readonly"></input></td>
                 </tr>
+                <tr>
+                    <td>金额:</td>
+                    <td><input id="cash"  name="cash" type="text" class="easyui-validatebox easyui-numberbox" data-options="required:'required',validType:'length[1,6]'"></input></td>
+                </tr>
+                
                 <tr>
                     <td>操作人:</td>
                     <td><input class="easyui-textbox" type="text" name="man" data-options="required:true"></input></td>
@@ -49,7 +54,8 @@
         },    
         success:function(data){   
         	successTip(data);
-        	$("input[name='cash']").val("0");
+        	$("input[id='nowcash']").val("");
+        	$("input[id='cash']").val("");
         	$("input[name='man']").val("");
         	$("input[name='remark']").val("");
         }    
@@ -60,7 +66,11 @@
      function clearForm(){
          $('#mainform').form('clear');
      }
-     
+     function fun_change(rec){
+    	 $.ajax({ url: "${ctx}/account/cashout/getCardCash?cardid="+rec.text,  success: function(data){
+    		   $('#nowcash').val(data);
+    		}});
+     }
         
       
 

@@ -34,8 +34,8 @@ import com.tianyu.jty.common.web.BaseController;
  * @date 2015年1月13日
  */
 @Controller
-@RequestMapping("account/cashin")
-public class CashinController extends BaseController {
+@RequestMapping("account/cashout")
+public class CashoutController extends BaseController {
 
 	@Autowired
 	private CardService cardService;
@@ -53,23 +53,26 @@ public class CashinController extends BaseController {
 		model.addAttribute("accountUsers",accountUserService.getAll() );
 		model.addAttribute("accountTypes",accountTypeService.getAll() );
 		model.addAttribute("cards",cardService.getAll() );
-		return "account/cashin";
+		return "account/cashout";
 	}
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
 	public String save( Trade trade, Model model) {
-		trade.setCreateDate(new Date(System.currentTimeMillis()));
-		trade.setType("存款");
 		//给目标账户加钱
-		
 		Card card =cardService.get(trade.getFromCard().getId());
-		card.setCash(card.getCash()+trade.getCash());
+		card.setCash(card.getCash()-trade.getCash());
 		cardService.save(card);
+		
+		trade.setCreateDate(new Date(System.currentTimeMillis()));
+		trade.setType("取款");
 		trade.setRestCash(card.getCash());
 		tradeService.save(trade);
-		//model.addAttribute("accountUsers",accountUserService.getAll() );
-		//model.addAttribute("accountTypes",accountTypeService.getAll() );
 		return "success";
 	}
-
+	@ResponseBody
+	@RequestMapping(value="getCardCash")
+	public Double getCardCash( String cardid) {
+		return cardService.get(cardid).getCash();
+		
+	}
 }
