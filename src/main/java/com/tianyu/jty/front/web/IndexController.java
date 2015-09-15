@@ -1,21 +1,22 @@
 package com.tianyu.jty.front.web;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tianyu.jty.acount.entity.AccountUser;
+import com.tianyu.jty.acount.entity.Card;
+import com.tianyu.jty.acount.entity.Trade;
 import com.tianyu.jty.acount.service.AccountUserService;
-import com.tianyu.jty.common.utils.Global;
+import com.tianyu.jty.acount.service.CardService;
+import com.tianyu.jty.acount.service.TradeService;
 
 /**
  * 登录controller
@@ -26,8 +27,16 @@ import com.tianyu.jty.common.utils.Global;
 @RequestMapping(value = "")
 public class IndexController{
 	
+	private List<Card> cards;
+	
 	@Autowired
 	AccountUserService accountUserService;
+	
+	@Autowired
+	CardService cardService;
+	
+	@Autowired
+	TradeService tradeService;
 	
 	@RequestMapping(value="index")
 	public String list() {
@@ -42,10 +51,19 @@ public class IndexController{
 		return "front/center";
 	}
 	@RequestMapping(value="trade")
-	public String trade() {
+	public String trade(HttpSession httpSession, Model model) {
+		cards=cardService.findByUser((AccountUser) httpSession.getAttribute("accountUser"));
+		model.addAttribute("cards",cards);
 		return "front/trade";
 	}
-	
+	@RequestMapping(value="tradedetail")
+	public String tradedetail(HttpSession httpSession,String id, Model model) {
+		List<Trade> trades=tradeService.findByCard(id);
+		cards=cardService.findByUser((AccountUser) httpSession.getAttribute("accountUser"));
+		model.addAttribute("trades",trades);
+		model.addAttribute("cards",cards);
+		return "front/trade";
+	}
 	@RequestMapping(value="center",method = RequestMethod.POST)
 	public String center(AccountUser accountUser, Model model,HttpSession httpSession) {
 		AccountUser user=accountUserService.get(accountUser.getId());
@@ -88,6 +106,16 @@ public class IndexController{
 	}
 
 	/**
+	 * 默认页面
+	 * @return
+	 */
+	@RequestMapping(value="loginout",method = RequestMethod.GET)
+	public String loginout(HttpSession httpSession) {
+		httpSession.invalidate();
+		return "front/index";
+	}
+
+	/**
 	 * 登录失败
 	 * @param userName
 	 * @param model
@@ -117,5 +145,10 @@ public class IndexController{
 		httpSession.removeAttribute("accountUser");
 		return "front/index";
 	}
-	
+	public List<Card> getCards() {
+		return cards;
+	}
+	public void setCards(List<Card> cards) {
+		this.cards = cards;
+	}
 }

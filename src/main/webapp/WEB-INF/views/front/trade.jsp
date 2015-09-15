@@ -84,7 +84,9 @@
 
 <div class="twelve columns">
 	<table class="standard-table">
-				<tbody><tr>
+				<tbody>
+				<tr>
+					<th>流水号</th>
 					<th>姓名</th>
 					<th>账号类型</th>
 					<th>账号号码</th>
@@ -95,51 +97,21 @@
 					<th>操作人</th>
 					<th>备注</th>
 				</tr>
+				<c:forEach items="${trades }" var="bean">
+						<tr>
+						<td>${bean.id }</td>
+								<td>${bean.fromCard.accountUser.name }</td>
+								<td>${bean.fromCard.accountType.name }</td>
+								<td>${bean.fromCard.id }</td>
+								<td>${bean.type }</td>
+								<td>${bean.cash }</td>
+								<td>${bean.toCard.id }</td>
+								<td>${bean.restCash }</td>
+								<td>${bean.man }</td>
+								<td>${bean.remark }</td>
+								</tr>
+				</c:forEach>
 				
-								<tr>
-								<td>22</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22222</td>
-									<td>22222</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22222</td>
-								</tr>
-				<tr>
-								<td>22</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22222</td>
-									<td>22222</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22222</td>
-								</tr>
-									<tr>
-								<td>22</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22222</td>
-									<td>22222</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22222</td>
-								</tr>
-									<tr>
-								<td>22</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22222</td>
-									<td>22222</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22</td>
-									<td>22222</td>
-								</tr>
 			</tbody></table>
 	
 </div>
@@ -148,21 +120,49 @@
 <!-- Widget
 ================================================== -->
 <div class="four columns">
-
-	
 	<!-- Categories -->
 	<div class="widget first">
-		<div class="headline no-margin"><h4>所有账户</h4></div>
+		<div class="headline no-margin"><h4>基本账户</h4></div>
 			<ul class="links-list-alt">
-				<li><a href="#">基本账户</a></li>
-				<li><a href="#">一般账户</a></li>
-				<li><a href="#">专用庄户</a></li>
-				<li><a href="#">Video Gallery</a></li>
-				<li><a href="#">Technology</a></li>
+				<c:forEach items="${cards }" var="bean">
+				<c:if test="${bean.accountType.id==1}">
+					<li><a href="./tradedetail?id=${bean.id }">${bean.id }</a></li>
+				</c:if>
+			</c:forEach>
 			</ul>
 	</div>
 	
+	<div class="widget ">
+		<div class="headline no-margin"><h4>一般账户</h4></div>
+			<ul class="links-list-alt">
+			<c:forEach items="${cards }" var="bean">
+				<c:if test="${bean.accountType.id==3}">
+					<li><a href="./tradedetail?id=${bean.id }">${bean.id }</a></li>
+				</c:if>
+			</c:forEach>
+			</ul>
+	</div>
+	<div class="widget ">
+		<div class="headline no-margin"><h4>专用账户</h4></div>
+			<ul class="links-list-alt">
+				<c:forEach items="${cards }" var="bean">
+				<c:if test="${bean.accountType.id==4}">
+					<li><a href="./tradedetail?id=${bean.id }">${bean.id }</a></li>
+				</c:if>
+			</c:forEach>
+			</ul>
+	</div>
 	
+	<div class="widget ">
+		<div class="headline no-margin"><h4>临时账户</h4></div>
+			<ul class="links-list-alt">
+				<c:forEach items="${cards }" var="bean">
+				<c:if test="${bean.accountType.id==2}">
+					<li><a href="./tradedetail?id=${bean.id }">${bean.id }</a></li>
+				</c:if>
+			</c:forEach>
+			</ul>
+	</div>
 </div>
 
 </div>
