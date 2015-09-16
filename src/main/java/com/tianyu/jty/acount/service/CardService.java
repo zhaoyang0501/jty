@@ -32,4 +32,8 @@ public class CardService extends BaseService<Card, String> {
 	public List<Card> findByUser(AccountUser accountUser){
 		return this.cardDao.findByUser(accountUser);
 	}
+	public List<Card> findByUserAndType(AccountUser accountUser,Integer typeid){
+		return this.cardDao.findByUser(accountUser);
+	}
+	
 }

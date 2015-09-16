@@ -23,4 +23,10 @@ public class CardDao extends HibernateDao<Card, String>{
 		Query query= createQuery(hql, accountUser.getId());
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Card> findByUserAndType(AccountUser accountUser,Integer typeid){
+		String hql="select t from Card t where t.accountUser.id=?0 and accountType.id=?1";
+		Query query= createQuery(hql, accountUser.getId(),typeid);
+		return query.list();
+	}
 }

@@ -92,6 +92,12 @@ public class CardController extends BaseController {
 		card.setId(CardIDUtil.getID(card.getAccountType().getId()));
 		card.setCreateDate(new Date(System.currentTimeMillis()));
 		card.setState("正常");
+		/*检查基本卡**/
+		if(card.getAccountType().getId()==1){
+			List<Card> cards=cardService.findByUserAndType(card.getAccountUser(),1);
+			if(cards.size()>0)
+				return "基本类型的卡一个用户只能开一张！";
+		}
 		cardService.save(card);
 		return "success";
 	}
@@ -128,6 +134,14 @@ public class CardController extends BaseController {
 		oldCard.setBank(card.getBank());
 		oldCard.setPersonno(card.getBank());
 		oldCard.setCash(card.getCash());
+		
+		/*检查基本卡**/
+		if(oldCard.getAccountType().getId()==1){
+			List<Card> cards=cardService.findByUserAndType(oldCard.getAccountUser(),1);
+			if(cards.size()>0)
+				return "基本类型的卡一个用户只能开一张！";
+		}
+		
 		cardService.update(oldCard);
 		return "success";
 	}

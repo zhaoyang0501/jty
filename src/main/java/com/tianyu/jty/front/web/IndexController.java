@@ -3,6 +3,7 @@ package com.tianyu.jty.front.web;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,22 @@ public class IndexController{
 		return "front/center";
 	}
 	
+	@RequestMapping(value="findpw",method = RequestMethod.POST)
+	public String findpw(String loginName, Model model,HttpSession httpSession) {
+		AccountUser user=accountUserService.getUser(loginName);
+		if(user!=null){
+			try {
+				MailUtil.sendEmail(user);
+				model.addAttribute("tip"," 找回密码邮件已经发送到"+user.getEmail()+",请注意查收！");
+			} catch (MessagingException e) {
+				model.addAttribute("tip"," 邮件发送失败！");
+			}
+			
+		}else{
+			model.addAttribute("tip"," 用户名不正确找不到该用户！");
+		}
+		return "front/center";
+	}
 	
 	@RequestMapping(value="doregister",method = RequestMethod.POST)
 	public String register(AccountUser accountUser, Model model) {
