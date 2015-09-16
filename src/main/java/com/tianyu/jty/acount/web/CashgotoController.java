@@ -34,8 +34,8 @@ import com.tianyu.jty.common.web.BaseController;
  * @date 2015年1月13日
  */
 @Controller
-@RequestMapping("account/cashout")
-public class CashoutController extends BaseController {
+@RequestMapping("account/cashgoto")
+public class CashgotoController extends BaseController {
 
 	@Autowired
 	private CardService cardService;
@@ -53,26 +53,30 @@ public class CashoutController extends BaseController {
 		model.addAttribute("accountUsers",accountUserService.getAll() );
 		model.addAttribute("accountTypes",accountTypeService.getAll() );
 		model.addAttribute("cards",cardService.getAll() );
-		return "account/cashout";
+		return "account/cashgoto";
 	}
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
 	public String save( Trade trade, Model model) {
 		//给目标账户加钱
-		Card card =cardService.get(trade.getFromCard().getId());
-		if(card.getCash()<trade.getCash())
+		Card formcard =cardService.get(trade.getFromCard().getId());
+		Card tocard =cardService.get(trade.getToCard().getId());
+		if(formcard.getCash()<trade.getCash())
 			return "余额不足";
-		if(card.getAccountType().getId()==1){
-			return "此账户属于"+card.getAccountType().getName()+",权限不足！";
+		if(formcard.getAccountType().getId()==1){
+			return "此账户属于"+formcard.getAccountType().getName()+",权限不足！";
 		}
 		
-		card.setCash(card.getCash()-trade.getCash());
-		cardService.save(card);
+		formcard.setCash(formcard.getCash()-trade.getCash());
+		cardService.save(formcard);
+		
+		tocard.setCash(tocard.getCash()+trade.getCash());
+		cardService.save(tocard);
 		
 		trade.setCreateDate(new Date(System.currentTimeMillis()));
-		trade.setType("取款");
+		trade.setType("转账");
 		trade.setCash(-trade.getCash());
-		trade.setRestCash(card.getCash());
+		trade.setRestCash(formcard.getCash());
 		tradeService.save(trade);
 		return "success";
 	}
