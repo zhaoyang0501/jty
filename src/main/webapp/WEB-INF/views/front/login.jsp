@@ -86,7 +86,8 @@
 			<form method="post" action="${pageContext.request.contextPath}/login">
 				<div class="field">
 					<label>用户名:</label>
-					<input type="text" name="loginName" class="text">
+					<input type="text" name="loginName" class="text" style="display: inline;">
+					<a href="${pageContext.request.contextPath}/findpw">忘记密码?</a>
 				</div>
 				<div class="field">
 					<label>密码:</label>

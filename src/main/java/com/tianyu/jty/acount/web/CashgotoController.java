@@ -63,7 +63,7 @@ public class CashgotoController extends BaseController {
 		Card tocard =cardService.get(trade.getToCard().getId());
 		if(formcard.getCash()<trade.getCash())
 			return "余额不足";
-		if(formcard.getAccountType().getId()==1){
+		if(formcard.getAccountType().getId()==3||formcard.getAccountType().getId()==4){
 			return "此账户属于"+formcard.getAccountType().getName()+",权限不足！";
 		}
 		

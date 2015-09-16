@@ -62,7 +62,7 @@ public class CashoutController extends BaseController {
 		Card card =cardService.get(trade.getFromCard().getId());
 		if(card.getCash()<trade.getCash())
 			return "余额不足";
-		if(card.getAccountType().getId()==1){
+		if(card.getAccountType().getId()==3||card.getAccountType().getId()==4){
 			return "此账户属于"+card.getAccountType().getName()+",权限不足！";
 		}
 		

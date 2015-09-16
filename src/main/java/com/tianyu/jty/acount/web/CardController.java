@@ -132,13 +132,13 @@ public class CardController extends BaseController {
 		oldCard.setAccountType(card.getAccountType());
 		oldCard.setAccountUser(card.getAccountUser());
 		oldCard.setBank(card.getBank());
-		oldCard.setPersonno(card.getBank());
+		oldCard.setPersonno(card.getPersonno());
 		oldCard.setCash(card.getCash());
 		
 		/*检查基本卡**/
 		if(oldCard.getAccountType().getId()==1){
 			List<Card> cards=cardService.findByUserAndType(oldCard.getAccountUser(),1);
-			if(cards.size()>0)
+			if(cards.size()>1)
 				return "基本类型的卡一个用户只能开一张！";
 		}
 		

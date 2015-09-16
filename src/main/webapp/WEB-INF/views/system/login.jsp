@@ -34,7 +34,7 @@ request.setAttribute("error", error);
 				<div class="login_main_top"></div>
 				<div class="login_main_errortip">&nbsp;</div>
 				<div class="login_main_ln">
-					<input type="text" id="username" name="username" value="admin"/>
+					<input type="text" id="username" name="username" value="test"/>
 				</div>
 				<div class="login_main_pw">
 					<input type="password" id="password" name="password" value="123456"/>

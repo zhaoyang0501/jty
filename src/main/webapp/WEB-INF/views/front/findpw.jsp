@@ -55,84 +55,48 @@
 <%@include file="./head.jsp" %>
 </div>
 <!-- 960 Container / End -->
-<div class="container">
+
+
 <!-- Content
 ================================================== -->
-
-	<!-- Flexslider -->
+<div class="container">
 	<div class="sixteen columns">
-		<section class="slider">
-			<div class="flexslider home">
-				<ul class="slides">
-				
-					<li>
-						<img src="images/web/c.jpg" alt="" />
-						<div class="slide-caption">
-							<h3>基金服务</h3>
-							<p>新手入门基金类型丰富，安全专业，就是平安陆金所，基金频道已经强势上线。平安陆金所基金频道，是您2015理财优质基金平台，千万用户理财</p>
-						
-						</div>
-					</li>
-					
-					<li>
-						<img src="images/web/a.jpg" alt="" />
-					</li>
-					<li>
-						<img src="images/web/d.jpg" alt="" />
-					</li>
-					<li>
-						<img src="images/web/b.jpg" alt="" />
-						<div class="slide-caption">
-							<h3>理财服务中心</h3>
-							<p>协会优先登记有管理基金经验的私募投资基金管理机构的申请。对于没有管理过基金的申请机构，协会除核对其是否如实填报申请材料、申请机构及其实际控制人</p>
-						</div>
-					</li>
-					
-				</ul>
-			</div>
-		</section>
-  	</div>
+		<div id="page-title">
+			<h2>找回密码</h2>
+			<div id="bolded-line"></div>
+		</div>
+
+	</div>
+</div>
 
 <div class="container">
-
-	<!-- Icon Boxes -->
-	<div class="icon-box-container">
-
-		<!-- Icon Box Start -->
-		<div class="one-third column">
-			<div class="icon-box">
-				<i class="ico-display" style="margin-left: -10px;"></i>
-				<h3>立即签约</h3>
-				<p>汇聚海量资深投资顾问智慧，提供个性化、一对一专属服务，助您开启财富之门</p>
-			</div>
+<c:if test="${tip!=null }">
+	<div class="sixteen columns">
+		<div class="notification error  closeable" style="margin: 5px 0 25px 0;">
+			<p>${tip}</p>
 		</div>
-		<!-- Icon Box End -->
-		
-		<!-- Icon Box Start -->
-		<div class="one-third column">
-			<div class="icon-box">
-				<i class="ico-cogwheel"></i>
-				<h3>立即开通</h3>
-				<p>不用到香港，不用换港币，不用新开户，为您开启直投港股的直通车</p>
-			</div>
-		</div>
-		<!-- Icon Box End -->
-		
-		<!-- Icon Box Start -->
-		<div class="one-third column">
-			<div class="icon-box">
-				<i class="ico-iphone"></i>
-				<h3>马上融资</h3>
-				<p>有财贷”是一种通过沪深交易所场内股票质押通道，为您提供最低融资</p>
-			</div>
-		</div>
-		<!-- Icon Box End -->
-		
 	</div>
-	<!-- Icon Boxes / End -->
-	
+</c:if>
+
+
+	<!-- Contact Form -->
+	<div class="sixteen columns " >
+		<!-- Form -->
+		<div id="contact-form">
+			<form method="post" action="${pageContext.request.contextPath}/findpw">
+				<div class="field">
+					<label>用户名:</label>
+					<input type="text" name="loginName" class="text" style="display: inline;">
+				</div>
+				<div class="field">
+					<input  class='button color medium' type="submit"  value="确定">
+				</div>
+			</form>
+		</div>
 </div>
- </div>
+</div>
+
+
 </div>
 <!-- Wrapper / End -->
 

@@ -48,11 +48,26 @@ public class IndexController{
 		return "front/register";
 	}
 	@RequestMapping(value="center")
-	public String center() {
+	public String center(HttpSession httpSession, Model model) {
+		if(httpSession.getAttribute("accountUser")==null){
+			model.addAttribute("tip","您未登录系统，请登录！");
+			return "front/login";
+		}
 		return "front/center";
 	}
+	@RequestMapping(value="findpw",method = RequestMethod.GET)
+	public String findpw() {
+		return "front/findpw";
+	}
+	
+	
 	@RequestMapping(value="trade")
 	public String trade(HttpSession httpSession, Model model) {
+		if(httpSession.getAttribute("accountUser")==null){
+			model.addAttribute("tip","您未登录系统，请登录！");
+			return "front/login";
+		}
+			
 		cards=cardService.findByUser((AccountUser) httpSession.getAttribute("accountUser"));
 		model.addAttribute("cards",cards);
 		return "front/trade";
@@ -104,7 +119,7 @@ public class IndexController{
 		}else{
 			model.addAttribute("tip"," 用户名不正确找不到该用户！");
 		}
-		return "front/center";
+		return "front/findpw";
 	}
 	
 	@RequestMapping(value="doregister",method = RequestMethod.POST)
